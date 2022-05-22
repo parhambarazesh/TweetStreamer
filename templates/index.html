@@ -55,13 +55,12 @@
             />
             <button
               class="btn btn-outline-success"
-              type="submit"
-              onclick="search()"
+              type="button"
+              onclick="search('keyword')"
             >
               Search
             </button>
           </form>
-          <p id="numberOfRequests">0</p>
         </div>
       </div>
     </nav>
@@ -71,54 +70,37 @@
 
   <script type="text/javascript">
     var socket = io.connect("http://127.0.0.1:5000");
-    // socket.off('connect').on("connect", function () {
-    //   socket.send("User Connected");
-    // });
-    var intervalId = setInterval(function () {
-        console.log("Message Requested");
-        socket.send($(keywordToShow).context.innerText.split(" ").pop());
-      }, 5000);
+    
     function search() {
-      console.log("SEARCH");
+      $(keywordToShow).text("Streaming tweets for: "+$('#keyword').val());
+      $(messages).text("");
 
+      console.log("SEARCH");
       $.ajax({
         url: "http://localhost:3000/search",
         type: "POST",
         contentType: "application/json",
         data: {
           keyword: $("#keyword").val(),
-          ReqNo: $("#numberOfRequests").val(),
         },
         success: function (data) {
-          console.log(123241545142343);
           console.log(data);
-          $("#numberOfRequests").text(parseInt($("#numberOfRequests").text()) + 1);
-          // $("#keywordToShow").text(data);
-          socket.send($(keywordToShow).text());
-          // var intervalId = setInterval(function () {
-          //   console.log("Message Requested");
-          //   socket.send($(keywordToShow).text());
-          // }, 5000);
-
-          
         },
         error: function (err) {
           console.log("ERROR");
           console.log(err);
         },
       });
-      // var keyword = $('#keyword').val();
-      // $('#keywordToShow').text(keyword);
-      // $('#keyword').val('');
-      // socket.emit('search', keyword);
     }
 
+    
     $(document).ready(function () {
-      console.log(123);
-      console.log(document.getElementById("keywordToShow").innerHTML);
+      var intervalId = setInterval(function () {
+        console.log("Message Requested");
+        socket.send($(keywordToShow).context.innerText.split(" ").pop());
+      }, 5000);
       socket.on("message", function (data) {
         if (data!=undefined){
-
           $("#messages").append("<li>" + data + "</li>");
           console.log("Received message");
         }
