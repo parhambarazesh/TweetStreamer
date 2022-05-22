@@ -46,7 +46,7 @@ def delete_all_rules(headers, bearer_token, rules):
 def set_rules(headers, delete, bearer_token,rule):
     # You can adjust the rules if needed
     sample_rules = [
-        {"value": rule,"language":"en"},
+        {"value": rule,"tag":rule,"language":"en"},
     ]
     payload = {"add": sample_rules}
     response = requests.post(
@@ -63,8 +63,6 @@ def set_rules(headers, delete, bearer_token,rule):
 
 def get_stream(headers, set, bearer_token,rule):
     global data, counter
-    # if rule=="cancel":
-    #     response=''
 
     response = requests.get(
         "https://api.twitter.com/2/tweets/search/stream", headers=headers, stream=True,
@@ -79,7 +77,7 @@ def get_stream(headers, set, bearer_token,rule):
     for response_line in response.iter_lines():
         if response_line:
             json_response = json.loads(response_line)
-            data={"tweet":json_response["data"]["text"],"status":"pending"}
+            data={"rule":json_response["matching_rules"][0]["tag"],"tweet":json_response["data"]["text"],"status":"pending"}
             print(data["tweet"])
             write_to_database(data,rule)
 
