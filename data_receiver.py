@@ -1,8 +1,5 @@
-from audioop import cross
-from distutils.log import error
-from http.client import OK
-from flask import Flask, render_template, request, jsonify
-from requests import Response
+import time
+from flask import Flask, render_template, request
 import threading
 from flask_cors import CORS,cross_origin
 
@@ -21,28 +18,24 @@ app = Flask(__name__)
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-# Additional code goes here #
 @app.route('/')
 def home_page():
     return render_template('index.html')
 
-
 @app.route("/search",methods=['GET', 'POST'])
 @cross_origin()
 def search():
-    if request.method == 'POST':
-        global t1
+    if request.method == 'POST':      
         print("SEARCH")
-        rule=request.get_data().decode('utf-8').split('&')[0].replace("keyword=","")
-        ReqNo=request.get_data().decode('utf-8').split('&')[1].replace("ReqNo=","")
+        rule=request.get_data().decode('utf-8').split("&")[0].replace("keyword=","")
         print("RULE",rule)
-        # rule=request.form["keyword"]
-        # if ReqNo!="0":
-        #     t1.raise_exception()
-        #     t1.join()
-        # t1=threading.Thread(target=main(rule))
-        # t1.start()
-        return rule
-        return render_template('index.html',data=rule)
 
-app.run(host="127.0.0.1",port="3000",debug=True)
+        while 1:
+            print(2)
+            time.sleep(1)
+        # t1=threading.Thread(target=main(rule,cancel))
+        # t1.start()
+
+        return rule
+
+app.run(host="0.0.0.0",port="3000",debug=True)
