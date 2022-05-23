@@ -20,7 +20,6 @@ def get_rules(headers, bearer_token):
         raise Exception(
             "Cannot get rules (HTTP {}): {}".format(response.status_code, response.text)
         )
-    # print("Rules",json.dumps(response.json()))
     return response.json()
 
 
@@ -41,7 +40,6 @@ def delete_all_rules(headers, bearer_token, rules):
                 response.status_code, response.text
             )
         )
-    # print("AllRules:",json.dumps(response.json()))
 
 
 def set_rules(headers, delete, bearer_token,rule):
@@ -59,7 +57,6 @@ def set_rules(headers, delete, bearer_token,rule):
         raise Exception(
             "Cannot add rules (HTTP {}): {}".format(response.status_code, response.text)
         )
-    # print("SetRules:",json.dumps(response.json()))
 
 
 def get_stream(headers, set, bearer_token,rule):
@@ -68,7 +65,6 @@ def get_stream(headers, set, bearer_token,rule):
     response = requests.get(
         "https://api.twitter.com/2/tweets/search/stream", headers=headers, stream=True,
     )
-    # print("StatusCode:",response.status_code)
     if response.status_code != 200:
         raise Exception(
             "Cannot get stream (HTTP {}): {}".format(
