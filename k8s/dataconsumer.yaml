@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dataconsumer-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataconsumer
+  template:
+    metadata:
+      labels:
+        app: dataconsumer
+    spec:
+      containers:
+        - name: dataconsumer
+          image: parhambrz/dataconsumer:latest
+---
+# Setup ClusterIP
+apiVersion: v1
+kind: Service
+metadata:
+  name: dataconsumer-svc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: dataconsumer
