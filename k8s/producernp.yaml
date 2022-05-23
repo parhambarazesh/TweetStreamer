@@ -1,0 +1,14 @@
+# setup NodePort
+apiVersion: v1
+kind: Service
+metadata:
+  name: dataproducernp-svc
+spec:
+  type: NodePort
+  selector:
+    app: dataproducer
+  ports:
+    - name: dataproducer
+      port: 80
+      targetPort: 80
+      protocol: TCP
