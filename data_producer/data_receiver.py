@@ -27,15 +27,13 @@ def home_page():
 @cross_origin()
 def search():
     if request.method == 'POST':      
-        print("SEARCH")
         rule=request.get_data().decode('utf-8').split("&")[0].replace("keyword=","")
-        print("RULE",rule)
 
-        while 1:
-            print(2)
-            time.sleep(1)
-        # t1=threading.Thread(target=main(rule,cancel))
-        # t1.start()
+        # while 1:
+        #     print(2)
+        #     time.sleep(1)
+        t1=threading.Thread(target=main(rule))
+        t1.start()
 
         return rule
 
