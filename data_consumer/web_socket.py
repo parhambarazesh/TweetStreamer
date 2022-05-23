@@ -7,24 +7,17 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 
 @socketio.on('message')
 def handleMessage(rule):
-    print("\n\n\n")
-    print("HANDLE MESSAGE",rule)
-    
-    print("\n\n\n")
+    print("handling message, ",rule)
     if rule=="" or rule=="{{data}}":
         return
     else:
-        print("RULE:",rule)
-        print("CONDITION:",rule!="")
         tweet=read_from_database(rule)
         socketio.emit('message', tweet)
 
 
 @socketio.on('connect')
 def handleConnect():
-    print("\n\n\n")
-    print("Client connected")
-    print("\n\n\n")
+    print("Client is connected")
 
 @socketio.on('disconnect')
 def handleDisconnect():
